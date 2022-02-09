@@ -1,6 +1,5 @@
 import { Box } from '@mui/system';
-import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
-import React, { useEffect } from 'react'
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useFetchBooks } from '../../../hooks/useFetchBooks';
 import { formatDate } from '../../../lib/formatDate';
 import { FetchedBook } from '../../../types/book';
