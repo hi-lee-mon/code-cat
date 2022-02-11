@@ -9,14 +9,14 @@ const asBook = (doc: DocumentSnapshot) => {
   const errorMsg = "通信エラー"
   // 型チェック
   if (typeof book === "undefined") throw new Error(errorMsg)
-  if (!("id" in book)) throw new Error(errorMsg)
+  if (!("bookId" in book)) throw new Error(errorMsg)
   if (!("title" in book)) throw new Error(errorMsg)
   if (!("lastName" in book)) throw new Error(errorMsg)
   if (!("firstName" in book)) throw new Error(errorMsg)
   if (!("genre" in book)) throw new Error(errorMsg)
   if (!("updateDate" in book)) throw new Error(errorMsg)
   // 型を確定させて返却
-  return { ...doc.data({ serverTimestamps: "estimate" }) } as FetchedBook
+  return { ...doc.data({ serverTimestamps: "estimate" }), id: doc.id } as FetchedBook
 }
 
 /**
@@ -32,7 +32,7 @@ export const useFetchBooks = () => {
   useEffect(() => {
     const colRef = collection(db, "book");
     // id順でクエリ
-    const q = query(colRef, orderBy("id"));
+    const q = query(colRef, orderBy("bookId"));
 
     // 対象のドキュメントに変更か差分があったときのみ動く
     const unSub = onSnapshot(q, (querySnapshot) => {

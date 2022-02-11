@@ -6,11 +6,11 @@ import { db } from "./config";
  * bookコレクションにデータを追加
  */
 export const addBook = async (book: Book) => {
-  const { id, title, firstName, lastName, genre } = book
+  const { bookId, title, firstName, lastName, genre } = book
   // collection Ref
   const colRef = collection(db, "book");
   const data = {
-    id,
+    bookId,
     title,
     firstName,
     lastName,
@@ -21,7 +21,6 @@ export const addBook = async (book: Book) => {
     await addDoc(colRef, data);
     return true
   } catch (error) {
-    console.error("送信エラー", error)
     return false
   }
 }

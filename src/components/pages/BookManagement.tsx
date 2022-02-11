@@ -5,9 +5,9 @@ import { BookManagementRef } from '../organisms/Admin/BookManagementRef'
 
 export const BookManagement = () => {
   return (
-    <Box m={2}>
+    <div>
       <BookManagementAdd />
       <BookManagementRef />
-    </Box>
+    </div>
   )
 }

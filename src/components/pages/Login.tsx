@@ -1,12 +1,39 @@
-import { Avatar, Box, Button, Grid, Link, Paper, TextField, Typography } from '@mui/material'
+import { Alert, Avatar, Box, Grid, Link, Paper, TextField, Typography } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton';
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { teal } from "@mui/material/colors";
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { basicSignin, login } from '../../firebase/auth';
+import { useOpenSnackbar } from '../../hooks/useSetSnackbar';
+import { useSetSnackbarMessage } from '../../hooks/useSnackbarMessage';
 
-export const Login = () => {
+export const Login: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [load, setLoad] = useState(false);
   const navigate = useNavigate();
-  const handleLogin = () => {
-    navigate("/");
+  const { openBar } = useOpenSnackbar();
+  const { setMessage } = useSetSnackbarMessage();
+
+  /**
+   * ログイン処理
+   */
+  const handleLogin = async () => {
+    setLoad(true);
+    try {
+      await login(email, password);
+      openBar();
+      setMessage("ログイン成功");
+      setLoad(false);
+      navigate("/bookManagement");
+    } catch (e) {
+      const error = e as Error
+      setMessage(error.message);
+      openBar();
+      setLoad(false);
+    }
+
   }
   return (
     <div>
@@ -34,19 +61,21 @@ export const Login = () => {
         </Grid>
         <Box mt={3}>
           {/* テキストフィールド */}
-          <TextField label="メールアドレス" fullWidth />
-          <TextField label="パスワード" fullWidth margin="normal" />
-          {/* サインインボタン */}
-          <Button type="submit" color="primary" variant="contained" fullWidth onClick={handleLogin}>
-            ログイン
-          </Button>
-          <Typography variant="caption">
-            <Link href="#">パスワードを忘れましたか？</Link>
-          </Typography>
-          <Typography variant="caption" display="block">
-            アカウントを持っていますか？
-            <Link href="#">アカウントを作成</Link>
-          </Typography>
+          <TextField label="メールアドレス" fullWidth onChange={({ target: { value } }) => setEmail(value)} />
+          <TextField label="パスワード" fullWidth margin="normal" onChange={({ target: { value } }) => setPassword(value)} />
+          <Box mt={3}>
+            {/* サインインボタン */}
+            <LoadingButton type="submit" color="primary" variant="contained" loading={load} loadingIndicator="ログイン中・・・" fullWidth onClick={handleLogin}>
+              ログイン
+            </LoadingButton>
+            <Typography variant="caption">
+              <Link href="#">パスワードを忘れましたか？</Link>
+            </Typography>
+            <Typography variant="caption" display="block">
+              アカウントを持っていますか？
+              <Link href="#">アカウントを作成</Link>
+            </Typography>
+          </Box>
         </Box>
       </Paper>
     </div>

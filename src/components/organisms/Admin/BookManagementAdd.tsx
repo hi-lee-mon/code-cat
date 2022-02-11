@@ -1,11 +1,11 @@
-import { Box, Button, CircularProgress, Stack, TextField } from '@mui/material';
+import { Box, IconButton, CircularProgress, Stack, TextField, Button } from '@mui/material';
 import { useState } from 'react';
 import { addBook } from '../../../firebase/post';
 import { Book } from '../../../types/book';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 const isValid = (book: Book) => {
-  if (book.id === "") return "空文字禁止"
+  if (book.bookId === "") return "空文字禁止"
   if (book.title === "") return "空文字禁止"
   if (book.firstName === "") return "空文字禁止"
   if (book.lastName === "") return "空文字禁止"
@@ -13,8 +13,10 @@ const isValid = (book: Book) => {
   return "";
 }
 
+
+
 export const BookManagementAdd = () => {
-  const [id, setId] = useState("");
+  const [bookId, setIBookId] = useState("");
   const [title, setTitle] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -22,9 +24,24 @@ export const BookManagementAdd = () => {
   const [message, setMessage] = useState("");
   const [load, setLoad] = useState(false);
 
+  /**
+   * 入力をすべてクリア
+   */
+  const clear = () => {
+    setIBookId("")
+    setTitle("")
+    setFirstName("")
+    setLastName("")
+    setGenre("")
+  }
+
+  /**
+   * 本をFirstoreに追加する
+   * @returns void
+   */
   const handleAddBook = async () => {
     const book: Book = {
-      id,
+      bookId,
       title,
       firstName,
       lastName,
@@ -32,20 +49,13 @@ export const BookManagementAdd = () => {
     }
     isValid(book);
     setLoad(true);
-
-
-
     const result = await addBook(book);
     setLoad(false);
-
-    if (!result) return setMessage("登録失敗")
+    if (!result) return setMessage("DB通信エラー")
     setMessage("登録成功")
-    setId("")
-    setTitle("")
-    setFirstName("")
-    setLastName("")
-    setGenre("")
+    clear()
   }
+
   return (
     <div>
       {
@@ -57,35 +67,35 @@ export const BookManagementAdd = () => {
           <Box>
             <p style={{ color: "red" }}>{message}</p>
             <Stack spacing={1}>
-              <Box sx={{ display: "flex" }}>
-                <TextField label="ID" placeholder='000' value={id} onChange={({ target: { value } }) => setId(value)} />
-                <Button color="error" onClick={() => setId("")}><CancelIcon color="error" /></Button>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <TextField sx={{ flexBasis: "500px" }} label="ID" placeholder='000' value={bookId} onChange={({ target: { value } }) => setIBookId(value)} />
+                <IconButton color="error" onClick={() => setIBookId("")} tabIndex={-1} ><CancelIcon color="error" /></IconButton >
               </Box>
-              <Box sx={{ display: "flex" }}>
-                <TextField label="タイトル" value={title} onChange={({ target: { value } }) => setTitle(value)} />
-                <Button color="error" onClick={() => setTitle("")}><CancelIcon color="error" /></Button>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <TextField sx={{ flexBasis: "500px" }} label="タイトル" placeholder='新世界より' value={title} onChange={({ target: { value } }) => setTitle(value)} />
+                <IconButton color="error" onClick={() => setTitle("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
               </Box>
-              <Box sx={{ display: "flex" }}>
-                <TextField label="作者(姓)" value={lastName} onChange={({ target: { value } }) => setLastName(value)} />
-                <Button color="error" onClick={() => setLastName("")}><CancelIcon color="error" /></Button>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <TextField sx={{ flexBasis: "500px" }} label="著者名(姓)" placeholder='貴志' value={lastName} onChange={({ target: { value } }) => setLastName(value)} />
+                <IconButton color="error" onClick={() => setLastName("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
               </Box>
-              <Box sx={{ display: "flex" }}>
-                <TextField label="作者(名)" value={firstName} onChange={({ target: { value } }) => setFirstName(value)} />
-                <Button color="error" onClick={() => setFirstName("")}><CancelIcon color="error" /></Button>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <TextField sx={{ flexBasis: "500px" }} label="著者名(名)" placeholder='祐介' value={firstName} onChange={({ target: { value } }) => setFirstName(value)} />
+                <IconButton color="error" onClick={() => setFirstName("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
               </Box>
-              <Box sx={{ display: "flex" }}>
-                <TextField label="ジャンル" value={genre} onChange={({ target: { value } }) => setGenre(value)} />
-                <Button color="error" onClick={() => setGenre("")}><CancelIcon color="error" /></Button>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <TextField sx={{ flexBasis: "500px" }} label="ジャンル" placeholder='SF' value={genre} onChange={({ target: { value } }) => setGenre(value)} />
+                <IconButton color="error" onClick={() => setGenre("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
               </Box>
             </Stack>
             <p>
-              <Button sx={{ minWidth: "100px" }} variant="contained" onClick={handleAddBook} disabled={genre === ""}>追加</Button>
+              <Button sx={{ minWidth: "100px" }} variant="contained" onClick={handleAddBook} disabled={genre === ""}>登録</Button >
             </p>
-          </Box>
+          </Box >
         )
       }
 
-    </div>
+    </div >
 
   )
 };
