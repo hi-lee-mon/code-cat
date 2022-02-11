@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { addBook } from '../../../firebase/post';
 import { Book } from '../../../types/book';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useRecoilState } from 'recoil';
+import { messageState } from '../../../globalState/atom/message';
 
 const isValid = (book: Book) => {
   if (book.bookId === "") return "空文字禁止"
@@ -21,7 +23,7 @@ export const BookManagementAdd = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [genre, setGenre] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useRecoilState(messageState);
   const [load, setLoad] = useState(false);
 
   /**
@@ -60,11 +62,11 @@ export const BookManagementAdd = () => {
     <div>
       {
         load ? (
-          <Box sx={{ m: "3" }}>
+          <Box sx={{ m: "3", minHeight: "430px" }}>
             <CircularProgress />
           </Box>
         ) : (
-          <Box>
+          <Box sx={{ minHeight: "430px" }}>
             <p style={{ color: "red" }}>{message}</p>
             <Stack spacing={1}>
               <Box sx={{ display: "flex", alignItems: "center" }}>
