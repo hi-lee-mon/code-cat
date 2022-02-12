@@ -4,18 +4,32 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { teal } from "@mui/material/colors";
 import { useInput } from '../../hooks/useInput';
 import { useLogin } from '../../hooks/useLogin';
+import { useOpenSnackbar } from '../../hooks/useSetSnackbarState';
+import { G_MSG_001, SEVERITY } from '../../constants/constants';
+import { useNavigate } from 'react-router-dom';
 
 export const Login: React.FC = () => {
   // state
   const { input: email, changeInput: setEmail } = useInput();
   const { input: password, changeInput: setPassword } = useInput();
   const { load, login } = useLogin();
+  const { openBar } = useOpenSnackbar();
+
+  // router
+  const navigate = useNavigate();
 
   /**
    * ログイン処理
    */
   const handleLogin = () => {
-    login(email, password)
+    try {
+      login(email, password);
+      openBar(G_MSG_001, SEVERITY.SUCCESS);
+      navigate("/bookManagement")
+    } catch (e) {
+      const error = e as Error
+      openBar(error.message, SEVERITY.WARNING);
+    }
   }
 
   return (
