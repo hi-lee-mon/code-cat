@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useSetRecoilState } from 'recoil';
-import { snackbarMessageState } from '../globalState/atom/snackbarState';
+import { snackbarMessageState } from '../globalState/snackbarState';
 
 export const useSetSnackbarMessage = () => {
   const setMessage = useSetRecoilState(snackbarMessageState);

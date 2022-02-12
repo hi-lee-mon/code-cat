@@ -7,7 +7,8 @@ import { useFetchBooks } from '../../../../hooks/useFetchBooks';
 import { createColumns } from './modules/createColumns';
 import { createRows } from './modules/createRows';
 import { useSetRecoilState } from 'recoil';
-import { messageState } from '../../../../globalState/atom/message';
+import { messageState } from '../../../../globalState/message';
+import { CustomDialog } from '../../Common/CustomDialog';
 
 export const BookManagementRef = () => {
   const [selectedRowIds, setSelectedRowIds] = useState<GridSelectionModel>([]);
@@ -31,6 +32,8 @@ export const BookManagementRef = () => {
     setMessage("")
     selectedRowIds.forEach(async (id) => {
       if (typeof id === "string") {
+        // TODO:完成したら削除してよいif文
+        if (id === "VYQszrhCDzIB0PrpkKEc") return setMessage("ID:000は消せないようにしています。")
         try {
           await deleteBook(id);
         } catch (e) {
@@ -53,26 +56,7 @@ export const BookManagementRef = () => {
         <Button variant="contained" color="primary" size="large" onClick={() => console.log(selectedRowIds)}>更新</Button>
       </Stack>
       {/* ダイアログ */}
-      <Dialog
-        open={open}
-        // TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{"【削除操作】"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            選択したデータを削除しますか？
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Stack direction="row" spacing={3}>
-            <Button variant="outlined" color='error' onClick={handleDelete}>はい</Button>
-            <Button variant="contained" color="primary" onClick={handleClose}>いいえ</Button>
-          </Stack>
-        </DialogActions>
-      </Dialog>
+      <CustomDialog open={open} closeDialog={handleClose} positive={handleDelete} display={{ title: "削除", text: "削除してもよろしいでしょうか？" }} />
     </div>
 
   )

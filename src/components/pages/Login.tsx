@@ -1,12 +1,11 @@
-import { Alert, Avatar, Box, Grid, Link, Paper, TextField, Typography } from '@mui/material'
+import { Avatar, Box, Grid, Link, Paper, TextField, Typography } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton';
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { teal } from "@mui/material/colors";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { basicSignin, login } from '../../firebase/auth';
-import { useOpenSnackbar } from '../../hooks/useSetSnackbar';
-import { useSetSnackbarMessage } from '../../hooks/useSnackbarMessage';
+import { login } from '../../firebase/auth';
+import { useOpenSnackbar } from '../../hooks/useSetSnackbarState';
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -14,23 +13,23 @@ export const Login: React.FC = () => {
   const [load, setLoad] = useState(false);
   const navigate = useNavigate();
   const { openBar } = useOpenSnackbar();
-  const { setMessage } = useSetSnackbarMessage();
 
   /**
    * ログイン処理
    */
   const handleLogin = async () => {
     setLoad(true);
+    const message = "ログイン成功";
+    const SUCCESS = "success"
+    const WARNING = "warning"
     try {
       await login(email, password);
-      openBar();
-      setMessage("ログイン成功");
+      openBar(message, SUCCESS);
       setLoad(false);
       navigate("/bookManagement");
     } catch (e) {
       const error = e as Error
-      setMessage(error.message);
-      openBar();
+      openBar(error.message, WARNING);
       setLoad(false);
     }
 
@@ -65,7 +64,7 @@ export const Login: React.FC = () => {
           <TextField label="パスワード" fullWidth margin="normal" onChange={({ target: { value } }) => setPassword(value)} />
           <Box mt={3}>
             {/* サインインボタン */}
-            <LoadingButton type="submit" color="primary" variant="contained" loading={load} loadingIndicator="ログイン中・・・" fullWidth onClick={handleLogin}>
+            <LoadingButton type="submit" color="primary" variant="contained" loading={load} fullWidth onClick={handleLogin}>
               ログイン
             </LoadingButton>
             <Typography variant="caption">

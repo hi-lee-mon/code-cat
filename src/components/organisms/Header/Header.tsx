@@ -4,8 +4,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../firebase/auth';
+import { CustomDialog } from '../Common/CustomDialog';
+import { useState } from 'react';
 
 const Header = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const navigate = useNavigate();
   const handleLogout = () => {
     logout();
@@ -32,12 +38,13 @@ const Header = () => {
             edge="start"
             color="inherit"
             aria-label="menu"
-            onClick={handleLogout}
+            onClick={handleOpen}
             sx={{ mr: 2 }}
           ><LogoutIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
+      <CustomDialog open={open} closeDialog={handleClose} positive={handleLogout} display={{ title: "ログアウト", text: "ログアウトしますか？" }} />
     </Box>
   )
 };

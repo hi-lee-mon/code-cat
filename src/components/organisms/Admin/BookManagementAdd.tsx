@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { addBook } from '../../../firebase/post';
 import { Book } from '../../../types/book';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useRecoilState } from 'recoil';
-import { messageState } from '../../../globalState/atom/message';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { messageState } from '../../../globalState/message';
+import Message from '../../atoms/Message';
 
 const isValid = (book: Book) => {
   if (book.bookId === "") return "空文字禁止"
@@ -23,7 +24,7 @@ export const BookManagementAdd = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [genre, setGenre] = useState("");
-  const [message, setMessage] = useRecoilState(messageState);
+  const setMessage = useSetRecoilState(messageState);
   const [load, setLoad] = useState(false);
 
   /**
@@ -67,7 +68,7 @@ export const BookManagementAdd = () => {
           </Box>
         ) : (
           <Box sx={{ minHeight: "430px" }}>
-            <p style={{ color: "red" }}>{message}</p>
+            <Message />
             <Stack spacing={1}>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <TextField sx={{ flexBasis: "500px" }} label="ID" placeholder='000' value={bookId} onChange={({ target: { value } }) => setIBookId(value)} />
