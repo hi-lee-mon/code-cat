@@ -3,9 +3,10 @@ import { useState } from 'react';
 import { addBook } from '../../../firebase/post';
 import { Book } from '../../../types/book';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { messageState } from '../../../globalState/message';
 import Message from '../../atoms/Message';
+import { useInput } from '../../../hooks/useInput';
 
 const isValid = (book: Book) => {
   if (book.bookId === "") return "空文字禁止"
@@ -19,11 +20,11 @@ const isValid = (book: Book) => {
 
 
 export const BookManagementAdd = () => {
-  const [bookId, setIBookId] = useState("");
-  const [title, setTitle] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [genre, setGenre] = useState("");
+  const [bookId, setIBookId] = useInput();
+  const [title, setTitle] = useInput();
+  const [firstName, setFirstName] = useInput();
+  const [lastName, setLastName] = useInput();
+  const [genre, setGenre] = useInput();
   const setMessage = useSetRecoilState(messageState);
   const [load, setLoad] = useState(false);
 

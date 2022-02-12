@@ -5,16 +5,14 @@ import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../firebase/auth';
 import { CustomDialog } from '../Common/CustomDialog';
-import { useState } from 'react';
+import { useDialog } from '../../../hooks/useDialog';
 
 const Header = () => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const { isOpen, close, open } = useDialog()
 
   const navigate = useNavigate();
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate("/login")
   }
   return (
@@ -38,13 +36,13 @@ const Header = () => {
             edge="start"
             color="inherit"
             aria-label="menu"
-            onClick={handleOpen}
+            onClick={open}
             sx={{ mr: 2 }}
           ><LogoutIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
-      <CustomDialog open={open} closeDialog={handleClose} positive={handleLogout} display={{ title: "ログアウト", text: "ログアウトしますか？" }} />
+      <CustomDialog open={isOpen} closeDialog={close} positive={handleLogout} display={{ title: "ログアウト", text: "ログアウトしますか？" }} />
     </Box>
   )
 };

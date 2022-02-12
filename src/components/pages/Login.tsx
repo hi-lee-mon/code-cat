@@ -10,8 +10,8 @@ import { useNavigate } from 'react-router-dom';
 
 export const Login: React.FC = () => {
   // state
-  const { input: email, changeInput: setEmail } = useInput();
-  const { input: password, changeInput: setPassword } = useInput();
+  const [email, setEmail] = useInput();
+  const [password, setPassword] = useInput();
   const { load, login } = useLogin();
   const { openBar } = useOpenSnackbar();
 
@@ -21,9 +21,9 @@ export const Login: React.FC = () => {
   /**
    * ログイン処理
    */
-  const handleLogin = () => {
+  const handleLogin = async () => {
     try {
-      login(email, password);
+      await login(email, password);
       openBar(G_MSG_001, SEVERITY.SUCCESS);
       navigate("/bookManagement")
     } catch (e) {

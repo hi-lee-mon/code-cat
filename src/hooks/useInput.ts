@@ -6,5 +6,6 @@ export const useInput = () => {
   const changeInput = (value: string) => {
     setInput(value)
   }
-  return { input, changeInput }
+  const returnValue = [input, changeInput] as const
+  return returnValue
 }

@@ -1,7 +1,7 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import { DataGrid, GridSelectionModel } from '@mui/x-data-grid';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { deleteBook } from '../../../../firebase/delete';
 import { useFetchBooks } from '../../../../hooks/useFetchBooks';
 import { createColumns } from './modules/createColumns';
@@ -9,27 +9,25 @@ import { createRows } from './modules/createRows';
 import { useSetRecoilState } from 'recoil';
 import { messageState } from '../../../../globalState/message';
 import { CustomDialog } from '../../Common/CustomDialog';
+import { useDialog } from '../../../../hooks/useDialog';
 
 export const BookManagementRef = () => {
   const [selectedRowIds, setSelectedRowIds] = useState<GridSelectionModel>([]);
-  const [open, setOpen] = useState(false);
+  const { isOpen, close, open } = useDialog()
   const setMessage = useSetRecoilState(messageState);
   // メッセージ情報を取得
   const books = useFetchBooks();
   // DataGridのpropsを作成
-  const columns = createColumns()
-  const rows = createRows(books);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const columns = useMemo(() => createColumns(), []);
+  const rows = createRows(books);
 
   /**
    * 削除処理
    * TODO:ある程度本の登録ができたらレコード1つ１つに削除ボタンをつける。
    */
   const handleDelete = () => {
-    handleClose()
-    setMessage("")
+    close()
     selectedRowIds.forEach(async (id) => {
       if (typeof id === "string") {
         // TODO:完成したら削除してよいif文
@@ -52,11 +50,11 @@ export const BookManagementRef = () => {
       </Box>
       {/* 削除・更新ボタン */}
       <Stack direction="row" spacing={2}>
-        <Button variant="contained" color="error" size="large" onClick={handleOpen}>削除</Button>
+        <Button variant="contained" color="error" size="large" onClick={open}>削除</Button>
         <Button variant="contained" color="primary" size="large" onClick={() => console.log(selectedRowIds)}>更新</Button>
       </Stack>
       {/* ダイアログ */}
-      <CustomDialog open={open} closeDialog={handleClose} positive={handleDelete} display={{ title: "削除", text: "削除してもよろしいでしょうか？" }} />
+      <CustomDialog open={isOpen} closeDialog={close} positive={handleDelete} display={{ title: "削除", text: "削除してもよろしいでしょうか？" }} />
     </div>
 
   )
