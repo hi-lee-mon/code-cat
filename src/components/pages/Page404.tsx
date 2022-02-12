@@ -1,9 +1,11 @@
-import React from 'react'
+import { Link } from 'react-router-dom'
 
 export const Page404 = () => {
   return (
     <div>
-      このページは存在しません。
+      404 notFoundだよ😎
+      <br />
+      <Link to="/login">ログインページへ</Link>
     </div>
   )
 }

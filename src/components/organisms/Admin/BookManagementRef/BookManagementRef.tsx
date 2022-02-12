@@ -15,10 +15,11 @@ export const BookManagementRef = () => {
   const [selectedRowIds, setSelectedRowIds] = useState<GridSelectionModel>([]);
   const { isOpen, close, open } = useDialog()
   const setMessage = useSetRecoilState(messageState);
-  // メッセージ情報を取得
-  const books = useFetchBooks();
-  // DataGridのpropsを作成
 
+  // 本情報を取得
+  const books = useFetchBooks();
+
+  // DataGridのpropsを作成
   const columns = useMemo(() => createColumns(), []);
   const rows = createRows(books);
 

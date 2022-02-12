@@ -5,6 +5,7 @@ import { useAuth } from './hooks/useAuth';
 import { BookManagement } from './components/pages/BookManagement';
 import { Home } from './components/pages/Home';
 import { CustomSnackbar } from './components/organisms/Common/CustomSnackbar';
+import { Page404 } from './components/pages/Page404';
 export const App = () => {
   // ログイン状態監視
   useAuth();
@@ -14,10 +15,10 @@ export const App = () => {
       <CustomSnackbar />
       {/* Routing */}
       <Routes>
-        <Route path="/bookManagement" element={<HeaderOnly><BookManagement /></HeaderOnly>} />
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/*" element={<p>404 notFoundだよ😎</p>} />
+        <Route path="/bookManagement" element={<HeaderOnly><BookManagement /></HeaderOnly>} />
+        <Route path="/" element={<HeaderOnly><Home /></HeaderOnly>} />
+        <Route path="/*" element={<Page404 />} />
       </Routes>
     </div>
 
