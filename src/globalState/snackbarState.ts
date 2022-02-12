@@ -1,10 +1,4 @@
-import { atom, selector } from "recoil";
-
-export const snackbarState = atom({
-  key: "snackbarState",
-  default: false,
-});
-
+import { atom } from "recoil";
 export const snackbarOpenState = atom({
   key: "snackbarOpenState",
   default: false,

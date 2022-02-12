@@ -47,7 +47,7 @@ export const anonymouslyLogin = async () => {
  * @param password 
  * @returns 
  */
-export const login = async (email: string, password: string) => {
+export const basicLogin = async (email: string, password: string) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (e) {

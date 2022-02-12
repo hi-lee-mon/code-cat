@@ -2,38 +2,22 @@ import { Avatar, Box, Grid, Link, Paper, TextField, Typography } from '@mui/mate
 import LoadingButton from '@mui/lab/LoadingButton';
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { teal } from "@mui/material/colors";
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { login } from '../../firebase/auth';
-import { useOpenSnackbar } from '../../hooks/useSetSnackbarState';
+import { useInput } from '../../hooks/useInput';
+import { useLogin } from '../../hooks/useLogin';
 
 export const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [load, setLoad] = useState(false);
-  const navigate = useNavigate();
-  const { openBar } = useOpenSnackbar();
+  // state
+  const { input: email, changeInput: setEmail } = useInput();
+  const { input: password, changeInput: setPassword } = useInput();
+  const { load, login } = useLogin();
 
   /**
    * ログイン処理
    */
-  const handleLogin = async () => {
-    setLoad(true);
-    const message = "ログイン成功";
-    const SUCCESS = "success"
-    const WARNING = "warning"
-    try {
-      await login(email, password);
-      openBar(message, SUCCESS);
-      setLoad(false);
-      navigate("/bookManagement");
-    } catch (e) {
-      const error = e as Error
-      openBar(error.message, WARNING);
-      setLoad(false);
-    }
-
+  const handleLogin = () => {
+    login(email, password)
   }
+
   return (
     <div>
       <Paper
