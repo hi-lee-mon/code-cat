@@ -1,4 +1,4 @@
-import { BookManagementAdd } from '../organisms/Admin/BookManagementAdd'
+import { BookManagementAdd } from '../organisms/Admin/BookManagementAdd/BookManagementAdd'
 import { BookManagementRef } from '../organisms/Admin/BookManagementRef/BookManagementRef'
 
 export const BookManagement = () => {

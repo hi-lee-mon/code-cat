@@ -5,7 +5,7 @@ import { db } from "./config";
 /**
  * bookコレクションにデータを追加
  */
-export const addBook = async (book: Book) => {
+export const addBookService = async (book: Book) => {
   const { bookId, title, firstName, lastName, genre } = book
   // collection Ref
   const colRef = collection(db, "book");

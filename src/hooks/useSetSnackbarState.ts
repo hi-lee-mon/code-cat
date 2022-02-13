@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useSetRecoilState } from 'recoil';
 import { snackbarAnchorState, snackbarMessageState, snackbarOpenState, snackbarSeverityState } from '../globalState/snackbarState';
 
-type Severity = "success" | "warning"
+type Severity = "success" | "warning" | "error" | "info"
 
 type Anchor = {
   vertical: "top",

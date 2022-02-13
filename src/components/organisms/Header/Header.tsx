@@ -4,11 +4,11 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../firebase/auth';
-import { CustomDialog } from '../Common/CustomDialog';
+import { CustomDialog } from '../../molecules/CustomDialog';
 import { useDialog } from '../../../hooks/useDialog';
 
 const Header = () => {
-  const { isOpen, close, open } = useDialog()
+  const [isOpen, { close, open }] = useDialog()
 
   const navigate = useNavigate();
   const handleLogout = async () => {

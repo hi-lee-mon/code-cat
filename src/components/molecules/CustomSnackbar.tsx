@@ -1,7 +1,7 @@
 import { Alert, Snackbar } from '@mui/material'
-import { useCloseSnackbar } from '../../../hooks/useSetSnackbarState';
+import { useCloseSnackbar } from '../../hooks/useSetSnackbarState';
 import { useRecoilValue } from 'recoil';
-import { snackbarAnchorState, snackbarMessageState, snackbarOpenState, snackbarSeverityState } from '../../../globalState/snackbarState';
+import { snackbarAnchorState, snackbarMessageState, snackbarOpenState, snackbarSeverityState } from '../../globalState/snackbarState';
 
 export const CustomSnackbar = () => {
   const { closeBar } = useCloseSnackbar();

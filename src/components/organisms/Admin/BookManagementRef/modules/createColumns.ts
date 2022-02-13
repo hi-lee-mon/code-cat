@@ -1,5 +1,9 @@
 import { GridColDef } from "@mui/x-data-grid";
 
+
+
+
+
 export const createColumns = () => {
   // カラム名の物理名、論理名オブジェクト
   const columnsData = {
@@ -16,6 +20,7 @@ export const createColumns = () => {
       field: key,
       headerName: value,
       width: 200,
+      editable: true,
     })
   );
 

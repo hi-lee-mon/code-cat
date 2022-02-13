@@ -28,7 +28,7 @@ export const Login: React.FC = () => {
       navigate("/bookManagement")
     } catch (e) {
       const error = e as Error
-      openBar(error.message, SEVERITY.WARNING);
+      openBar(error.message, SEVERITY.ERROR);
     }
   }
 

@@ -4,7 +4,7 @@ import { Login } from './components/pages/Login';
 import { useAuth } from './hooks/useAuth';
 import { BookManagement } from './components/pages/BookManagement';
 import { Home } from './components/pages/Home';
-import { CustomSnackbar } from './components/organisms/Common/CustomSnackbar';
+import { CustomSnackbar } from './components/molecules/CustomSnackbar';
 import { Page404 } from './components/pages/Page404';
 export const App = () => {
   // ログイン状態監視

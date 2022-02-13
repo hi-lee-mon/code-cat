@@ -1,12 +1,12 @@
 import { Box, IconButton, CircularProgress, Stack, TextField, Button } from '@mui/material';
 import { useState } from 'react';
-import { addBook } from '../../../firebase/post';
-import { Book } from '../../../types/book';
+import { addBookService } from '../../../../firebase/post';
+import { Book } from '../../../../types/book';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useSetRecoilState } from 'recoil';
-import { messageState } from '../../../globalState/message';
-import Message from '../../atoms/Message';
-import { useInput } from '../../../hooks/useInput';
+import { messageState } from '../../../../globalState/message';
+import Message from '../../../atoms/Message';
+import { useInput } from '../../../../hooks/useInput';
 
 const isValid = (book: Book) => {
   if (book.bookId === "") return "空文字禁止"
@@ -53,7 +53,7 @@ export const BookManagementAdd = () => {
     }
     isValid(book);
     setLoad(true);
-    const result = await addBook(book);
+    const result = await addBookService(book);
     setLoad(false);
     if (!result) return setMessage("DB通信エラー")
     setMessage("登録成功")

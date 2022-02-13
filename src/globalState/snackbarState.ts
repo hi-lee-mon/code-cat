@@ -16,7 +16,7 @@ export const snackbarMessageState = atom({
   default: "",
 });
 
-export const snackbarSeverityState = atom<"success" | "warning">({
+export const snackbarSeverityState = atom<"success" | "warning" | "error" | "info">({
   key: "snackbarSeverityState",
   default: "success",
 });

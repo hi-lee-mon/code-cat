@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-export const useInput = () => {
-  const [input, setInput] = useState("");
+export const useInput = (initial = "") => {
+  const [input, setInput] = useState(initial);
 
   const changeInput = (value: string) => {
     setInput(value)

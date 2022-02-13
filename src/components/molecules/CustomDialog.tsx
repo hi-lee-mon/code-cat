@@ -15,7 +15,6 @@ export const CustomDialog: React.FC<Props> = ({ open, closeDialog, positive, dis
   return (
     <Dialog
       open={open}
-      // TransitionComponent={Transition}
       keepMounted
       aria-describedby="alert-dialog-slide-description"
       PaperProps={{ sx: { minWidth: "350px", minHeight: "100px" } }}
