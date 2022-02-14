@@ -3,12 +3,12 @@ import { useState } from 'react';
 import { addBookService } from '../../../../firebase/post';
 import { Book } from '../../../../types/book';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useSetRecoilState } from 'recoil';
-import { messageState } from '../../../../globalState/message';
 import Message from '../../../atoms/Message';
 import { useInput } from '../../../../hooks/useInput';
 import { useOpenSnackbar } from '../../../../hooks/useSetSnackbarState';
 import { SEVERITY } from '../../../../constants/constants';
+import { useSetRecoilState } from 'recoil';
+import { messageState } from '../../../../globalState/message';
 
 const isValid = (book: Book) => {
   if (book.bookId === "") return "空文字禁止"
@@ -29,6 +29,7 @@ export const BookManagementAdd = () => {
   const [genre, setGenre] = useInput();
   const [load, setLoad] = useState(false);
   const { openBar } = useOpenSnackbar();
+  const setMessage = useSetRecoilState(messageState);
 
   /**
    * 入力をすべてクリア
@@ -46,6 +47,7 @@ export const BookManagementAdd = () => {
    * @returns void
    */
   const handleAddBook = async () => {
+    setMessage("")
     const book: Book = {
       bookId,
       title,
@@ -53,7 +55,9 @@ export const BookManagementAdd = () => {
       lastName,
       genre,
     }
-    isValid(book);
+    // TODO:高度なバリデーション処理を実装する
+    const result = isValid(book);
+    if (!(result === "")) return openBar(result, SEVERITY.INFO);
     setLoad(true);
     try {
       await addBookService(book);
