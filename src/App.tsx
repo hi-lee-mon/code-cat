@@ -21,7 +21,7 @@ export const App = () => {
         <Route path="/login" element={<HeaderOnly><Login /></HeaderOnly>} />
         <Route path="/bookManagement" element={<HeaderOnly><BookManagement /></HeaderOnly>} />
         <Route path="/" element={<HeaderOnly><Home /></HeaderOnly>} />
-        <Route path="/*" element={<Page404 />} />
+        <Route path="/*" element={<HeaderOnly><Page404 /></HeaderOnly>} />
       </Routes>
     </div>
 
