@@ -10,6 +10,9 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import { getCurrentLocationName } from './getCurrentLocationName';
 import { SEVERITY } from '../../../constants/constants';
 import { useOpenSnackbar } from '../../../hooks/useSetSnackbarState';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import { useSetRecoilState } from 'recoil';
+import { themeState } from '../../../globalState/themeState';
 
 
 
@@ -17,6 +20,7 @@ const Header = () => {
   const [isOpen, { close, open }] = useDialog()
   const loaction = useLocation();
   const { openBar } = useOpenSnackbar();
+  const setTheme = useSetRecoilState(themeState);
 
   const navigate = useNavigate();
   const handleLogout = async () => {
@@ -34,7 +38,7 @@ const Header = () => {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={() => openBar("え？ELDEN RING発売日は2月25日ですよ。", SEVERITY.SUCCESS)}
+            onClick={() => openBar("ELDEN RING 2月25日 発売", SEVERITY.SUCCESS)}
           ><LunchDiningIcon />
           </IconButton>
           {/* TODO:ヘッダーをグローバルなstateにする */}
@@ -43,6 +47,15 @@ const Header = () => {
               getCurrentLocationName(loaction.pathname)
             }
           </Typography>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={() => setTheme((prev) => !prev)}
+            sx={{ mr: 2 }}
+          ><Brightness4Icon />
+          </IconButton>
           <IconButton
             size="large"
             edge="start"

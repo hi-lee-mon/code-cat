@@ -20,7 +20,6 @@ export const createColumns = () => {
       field: key,
       headerName: value,
       width: 200,
-      editable: true,
     })
   );
 

@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack } from '@mui/material'
+import { useDialog } from '../../hooks/useDialog'
 
 type Props = {
   open: boolean,
@@ -11,7 +12,6 @@ type Props = {
 }
 
 export const CustomDialog: React.FC<Props> = ({ open, closeDialog, positive, display }) => {
-
   return (
     <Dialog
       open={open}

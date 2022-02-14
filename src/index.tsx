@@ -2,25 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { RecoilRoot } from 'recoil';
 import { App } from './App';
-import { ThemeProvider } from '@mui/material/styles';
-import { GlobalStyles } from '@mui/styled-engine';
 import reportWebVitals from './reportWebVitals';
-import { globalStyle } from './globalStyle';
-import { rootTheme } from './theme/rootTheme';
 import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
   // Providersディレクトリを作成するか検討
   <React.StrictMode>
     <RecoilRoot>
-      <GlobalStyles styles={globalStyle} />
-      <ThemeProvider theme={rootTheme}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ThemeProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </RecoilRoot>
-  </React.StrictMode>,
+  </React.StrictMode >,
   document.getElementById('root')
 );
 

@@ -5,6 +5,8 @@ import { useInput } from '../../hooks/useInput'
 import { getSeltectedRows } from '../../modules/getSeltectedRows'
 import { FetchedBook, updateBookParam } from '../../types/book'
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useDialog } from '../../hooks/useDialog'
+import { CustomDialog } from './CustomDialog'
 
 
 type Props = {
@@ -23,6 +25,7 @@ export const BookUpdateDialog: React.FC<Props> = ({ open, closeDialog, updateBoo
   const [firstName, setFirstName] = useInput(selectedRow.firstName);
   const [lastName, setLastName] = useInput(selectedRow.lastName);
   const [genre, setGenre] = useInput(selectedRow.genre);
+  const [isOpen, childModal] = useDialog();
 
   /**
  * 入力をすべてクリア
@@ -41,6 +44,8 @@ export const BookUpdateDialog: React.FC<Props> = ({ open, closeDialog, updateBoo
   }
 
   const handleUpdateBook = () => {
+    childModal.close();
+    closeDialog();
     const param: updateBookParam = {
       id: selectedRow.id,
       book: {
@@ -94,9 +99,10 @@ export const BookUpdateDialog: React.FC<Props> = ({ open, closeDialog, updateBoo
       </DialogContent>
       <DialogActions>
         <Stack direction="row" spacing={3}>
-          <Button variant="outlined" color='error' onClick={handleUpdateBook}>更新する</Button>
+          <Button variant="outlined" color='error' onClick={childModal.open}>更新する</Button>
           <Button variant="contained" color="primary" onClick={handleClose}>編集をやめる</Button>
         </Stack>
+        <CustomDialog open={isOpen} closeDialog={childModal.close} positive={handleUpdateBook} display={{ title: "更新確認", text: "更新しますか？" }} />
       </DialogActions>
     </Dialog>
   )

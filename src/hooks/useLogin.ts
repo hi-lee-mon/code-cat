@@ -2,7 +2,7 @@ import { basicLogin } from '../firebase/auth';
 import { useLoad } from './useLoad';
 
 export const useLogin = () => {
-  const { load, loading, loadCompleted } = useLoad();
+  const [load, { loading, loadCompleted }] = useLoad();
   /**
    * ログイン処理
    */

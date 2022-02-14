@@ -103,7 +103,7 @@ export const BookManagementAdd = () => {
                 <IconButton color="error" onClick={() => setGenre("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
               </Box>
             </Stack>
-            <Box mt={2} >
+            <Box mt={2} mb={3} >
               <Button sx={{ minWidth: "100px" }} variant="contained" onClick={handleAddBook} disabled={genre === ""}>登録</Button >
             </Box>
           </Box >

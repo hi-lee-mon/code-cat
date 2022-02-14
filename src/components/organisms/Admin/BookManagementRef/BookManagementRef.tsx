@@ -1,6 +1,6 @@
-import { Button, Stack } from '@mui/material';
+import { Button, LinearProgress, Stack } from '@mui/material';
 import { Box } from '@mui/system';
-import { DataGrid, GridSelectionModel } from '@mui/x-data-grid';
+import { DataGrid, GridOverlay, GridSelectionModel } from '@mui/x-data-grid';
 import { useMemo, useState } from 'react';
 import { deleteBookService } from '../../../../firebase/delete';
 import { useFetchBooks } from '../../../../hooks/useFetchBooks';
@@ -17,6 +17,8 @@ import { useOpenSnackbar } from '../../../../hooks/useSetSnackbarState';
 import { SEVERITY } from '../../../../constants/constants';
 import { updateBookParam } from '../../../../types/book';
 import { updateBookService } from '../../../../firebase/update';
+import { useLoad } from '../../../../hooks/useLoad';
+import { CustomLoadingOverlay } from './CustomLoadingOverlay';
 
 export const BookManagementRef = () => {
   const [selectedRowIds, setSelectedRowIds] = useState<GridSelectionModel>([]);
@@ -24,6 +26,7 @@ export const BookManagementRef = () => {
   const [isUpdateOpen, updateDialog] = useDialog()
   const { openBar } = useOpenSnackbar();
   const setMessage = useSetRecoilState(messageState);
+  const [load, table] = useLoad();
 
   // 本情報を取得
   const books = useFetchBooks();
@@ -75,6 +78,7 @@ export const BookManagementRef = () => {
   const updateBook = async (param: updateBookParam) => {
     if (param.id === "VYQszrhCDzIB0PrpkKEc") return openBar("ID:000は更新できないようにしてます", SEVERITY.INFO);
     try {
+      table.loading()
       await updateBookService(param)
       updateDialog.close()
       openBar("更新完了", SEVERITY.SUCCESS);
@@ -82,6 +86,7 @@ export const BookManagementRef = () => {
       const error = e as Error
       openBar(error.message, SEVERITY.ERROR);
     }
+    table.loadCompleted()
   }
 
 
@@ -95,6 +100,10 @@ export const BookManagementRef = () => {
           sx={{ minHeight: "380px" }} checkboxSelection
           onSelectionModelChange={(selectionModel) => setSelectedRowIds(selectionModel)}
           selectionModel={selectedRowIds} disableSelectionOnClick
+          loading={load}
+          components={{
+            LoadingOverlay: CustomLoadingOverlay,
+          }}
         />
       </Box>
       {/* 削除・更新ボタン */}
@@ -108,6 +117,5 @@ export const BookManagementRef = () => {
         isUpdateOpen && <BookUpdateDialog open={isUpdateOpen} closeDialog={updateDialog.close} updateBook={updateBook} rows={rows} ids={selectedRowIds} />
       }
     </div>
-
   )
 }

@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 
-export const rootTheme = createTheme({
+export const defaultTheme = createTheme({
   typography: {
     button: {
       textTransform: "none"

@@ -6,7 +6,7 @@ import { messageState } from '../../globalState/message'
 const Message = () => {
   const message = useRecoilValue(messageState);
   return (
-    <Box sx={{ minHeight: "40px" }}>
+    <Box sx={{ minHeight: "60px" }}>
       <p style={{ color: "red" }}>{message}</p>
     </Box>
   )
