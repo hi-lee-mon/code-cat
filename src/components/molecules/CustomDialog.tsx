@@ -27,8 +27,8 @@ export const CustomDialog: React.FC<Props> = ({ open, closeDialog, positive, dis
       </DialogContent>
       <DialogActions>
         <Stack direction="row" spacing={3}>
-          <Button variant="outlined" color='error' onClick={positive}>はい</Button>
-          <Button variant="contained" color="primary" onClick={closeDialog}>いいえ</Button>
+          <Button variant="outlined" color='error' onClick={positive}>オッケー！</Button>
+          <Button variant="contained" color="primary" onClick={closeDialog}>考え直す</Button>
         </Stack>
       </DialogActions>
     </Dialog>

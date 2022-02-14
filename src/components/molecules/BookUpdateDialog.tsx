@@ -66,7 +66,7 @@ export const BookUpdateDialog: React.FC<Props> = ({ open, closeDialog, updateBoo
       <DialogTitle>【更新】</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
-          更新した項目を編集して更新ボタンを押下してください。
+          更新したい項目を編集して更新するボタンを押下してください。
         </DialogContentText>
         <Box sx={{ minHeight: "430px", mt: "10px" }}>
           <Stack spacing={1}>
@@ -95,7 +95,7 @@ export const BookUpdateDialog: React.FC<Props> = ({ open, closeDialog, updateBoo
       </DialogContent>
       <DialogActions>
         <Stack direction="row" spacing={3}>
-          <Button variant="outlined" color='error' onClick={handleUpdateBook}>更新</Button>
+          <Button variant="outlined" color='error' onClick={handleUpdateBook}>更新する</Button>
           <Button variant="contained" color="primary" onClick={handleClose}>編集をやめる</Button>
         </Stack>
       </DialogActions>

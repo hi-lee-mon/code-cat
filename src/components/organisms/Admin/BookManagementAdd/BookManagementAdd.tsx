@@ -70,6 +70,7 @@ export const BookManagementAdd = () => {
     }
   }
 
+  // TODO:ボタンの位置をレスポンシブで変える。PCは左寄せ、スマホは右寄せ
   return (
     <div>
       {
@@ -78,7 +79,7 @@ export const BookManagementAdd = () => {
             <CircularProgress />
           </Box>
         ) : (
-          <Box sx={{ minHeight: "430px" }}>
+          <Box sx={{ minHeight: "430px", display: "flex", flexDirection: "column" }}>
             <Message />
             <Stack spacing={1}>
               <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -102,9 +103,9 @@ export const BookManagementAdd = () => {
                 <IconButton color="error" onClick={() => setGenre("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
               </Box>
             </Stack>
-            <p>
+            <Box mt={2} >
               <Button sx={{ minWidth: "100px" }} variant="contained" onClick={handleAddBook} disabled={genre === ""}>登録</Button >
-            </p>
+            </Box>
           </Box >
         )
       }
