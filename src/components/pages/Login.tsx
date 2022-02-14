@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid, Link, Paper, TextField, Typography } from '@mui/material'
+import { Avatar, Box, Grid, Link, Paper, Stack, TextField, Typography } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton';
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { teal } from "@mui/material/colors";
@@ -58,9 +58,10 @@ export const Login: React.FC = () => {
         </Grid>
         <Box mt={3}>
           {/* テキストフィールド */}
-          <TextField label="メールアドレス" fullWidth onChange={({ target: { value } }) => setEmail(value)} />
-          <TextField label="パスワード" fullWidth margin="normal" onChange={({ target: { value } }) => setPassword(value)} />
-          <Box mt={3}>
+          <TextField label="メールアドレス" value={email} type="text" fullWidth onChange={({ target: { value } }) => setEmail(value)} />
+          {/* TODO:パスワードの表示非表示 */}
+          <TextField label="パスワード" value={password} type="password" fullWidth margin="normal" onChange={({ target: { value } }) => setPassword(value)} />
+          <Stack spacing={2} mt={3}>
             {/* サインインボタン */}
             <LoadingButton type="submit" color="primary" variant="contained" loading={load} fullWidth onClick={handleLogin}>
               ログイン
@@ -72,7 +73,7 @@ export const Login: React.FC = () => {
               アカウントを持っていますか？
               <Link href="#">アカウントを作成</Link>
             </Typography>
-          </Box>
+          </Stack>
         </Box>
       </Paper>
     </div>

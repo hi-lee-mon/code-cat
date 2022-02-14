@@ -7,6 +7,8 @@ import { useSetRecoilState } from 'recoil';
 import { messageState } from '../../../../globalState/message';
 import Message from '../../../atoms/Message';
 import { useInput } from '../../../../hooks/useInput';
+import { useOpenSnackbar } from '../../../../hooks/useSetSnackbarState';
+import { SEVERITY } from '../../../../constants/constants';
 
 const isValid = (book: Book) => {
   if (book.bookId === "") return "空文字禁止"
@@ -25,8 +27,8 @@ export const BookManagementAdd = () => {
   const [firstName, setFirstName] = useInput();
   const [lastName, setLastName] = useInput();
   const [genre, setGenre] = useInput();
-  const setMessage = useSetRecoilState(messageState);
   const [load, setLoad] = useState(false);
+  const { openBar } = useOpenSnackbar();
 
   /**
    * 入力をすべてクリア
@@ -53,11 +55,15 @@ export const BookManagementAdd = () => {
     }
     isValid(book);
     setLoad(true);
-    const result = await addBookService(book);
-    setLoad(false);
-    if (!result) return setMessage("DB通信エラー")
-    setMessage("登録成功")
-    clear()
+    try {
+      await addBookService(book);
+      openBar(`登録完了`, SEVERITY.SUCCESS);
+      setLoad(false);
+      clear()
+    } catch (e) {
+      const error = e as Error;
+      openBar(error.message, SEVERITY.ERROR);
+    }
   }
 
   return (

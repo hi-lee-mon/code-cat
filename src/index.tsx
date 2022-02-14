@@ -10,6 +10,7 @@ import { rootTheme } from './theme/rootTheme';
 import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
+  // Providersディレクトリを作成するか検討
   <React.StrictMode>
     <RecoilRoot>
       <GlobalStyles styles={globalStyle} />

@@ -55,6 +55,7 @@ export const BookManagementRef = () => {
         const error = e as Error
         setMessage(error.message)
       }
+      setMessage("削除完了")
     });
   }
 

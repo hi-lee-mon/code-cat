@@ -6,6 +6,9 @@ import { BookManagement } from './components/pages/BookManagement';
 import { Home } from './components/pages/Home';
 import { CustomSnackbar } from './components/molecules/CustomSnackbar';
 import { Page404 } from './components/pages/Page404';
+
+//HeaderOnlyにヘッダーネームを渡す方法
+//グローバルstateとパスから動的に変更する
 export const App = () => {
   // ログイン状態監視
   useAuth();
@@ -15,7 +18,7 @@ export const App = () => {
       <CustomSnackbar />
       {/* Routing */}
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<HeaderOnly><Login /></HeaderOnly>} />
         <Route path="/bookManagement" element={<HeaderOnly><BookManagement /></HeaderOnly>} />
         <Route path="/" element={<HeaderOnly><Home /></HeaderOnly>} />
         <Route path="/*" element={<Page404 />} />

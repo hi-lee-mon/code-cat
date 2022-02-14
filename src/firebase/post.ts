@@ -19,9 +19,8 @@ export const addBookService = async (book: Book) => {
   }
   try {
     await addDoc(colRef, data);
-    return true
   } catch (error) {
-    return false
+    throw error
   }
 }
 
