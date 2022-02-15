@@ -1,5 +1,4 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack } from '@mui/material'
-import { useDialog } from '../../hooks/useDialog'
 
 type Props = {
   open: boolean,

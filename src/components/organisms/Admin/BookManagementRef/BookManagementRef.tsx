@@ -1,6 +1,6 @@
-import { Button, LinearProgress, Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import { Box } from '@mui/system';
-import { DataGrid, GridOverlay, GridSelectionModel } from '@mui/x-data-grid';
+import { DataGrid, GridSelectionModel } from '@mui/x-data-grid';
 import { useMemo, useState } from 'react';
 import { deleteBookService } from '../../../../firebase/delete';
 import { useFetchBooks } from '../../../../hooks/useFetchBooks';
@@ -97,7 +97,7 @@ export const BookManagementRef = () => {
       <Box mb={2}>
         <DataGrid
           columns={columns} rows={rows}
-          sx={{ minHeight: "380px" }} checkboxSelection
+          sx={{ minHeight: "430px" }} checkboxSelection
           onSelectionModelChange={(selectionModel) => setSelectedRowIds(selectionModel)}
           selectionModel={selectedRowIds} disableSelectionOnClick
           loading={load}

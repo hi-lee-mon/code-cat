@@ -9,17 +9,8 @@ import { useOpenSnackbar } from '../../../../hooks/useSetSnackbarState';
 import { SEVERITY } from '../../../../constants/constants';
 import { useSetRecoilState } from 'recoil';
 import { messageState } from '../../../../globalState/message';
-
-const isValid = (book: Book) => {
-  if (book.bookId === "") return "空文字禁止"
-  if (book.title === "") return "空文字禁止"
-  if (book.firstName === "") return "空文字禁止"
-  if (book.lastName === "") return "空文字禁止"
-  if (book.genre === "") return "空文字禁止"
-  return "";
-}
-
-
+import { isEmptyBookAddInput } from './isEmptyInput';
+import { CustomSkeleton } from './CustomSkeleton';
 
 export const BookManagementAdd = () => {
   const [bookId, setIBookId] = useInput();
@@ -56,8 +47,8 @@ export const BookManagementAdd = () => {
       genre,
     }
     // TODO:高度なバリデーション処理を実装する
-    const result = isValid(book);
-    if (!(result === "")) return openBar(result, SEVERITY.INFO);
+    const result = isEmptyBookAddInput(book);
+    if (result) return openBar("空文字は禁止", SEVERITY.INFO);
     setLoad(true);
     try {
       await addBookService(book);
@@ -74,17 +65,17 @@ export const BookManagementAdd = () => {
   return (
     <div>
       {
-        load ? (
+        true ? (
           <Box sx={{ m: "3", minHeight: "430px" }}>
-            <CircularProgress />
+            <CustomSkeleton />
           </Box>
         ) : (
           <Box sx={{ minHeight: "430px", display: "flex", flexDirection: "column" }}>
             <Message />
             <Stack spacing={1}>
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <TextField sx={{ flexBasis: "500px" }} label="ID" placeholder='000' value={bookId} onChange={({ target: { value } }) => setIBookId(value)} />
-                <IconButton color="error" onClick={() => setIBookId("")} tabIndex={-1} ><CancelIcon color="error" /></IconButton >
+                <TextField sx={{ flexBasis: "500px" }} label="ID" placeholder='000' value={bookId} onChange={({ target: { value } }) => setIBookId(value)} autoFocus={true} />
+                <IconButton color="error" onClick={() => setIBookId("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
               </Box>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <TextField sx={{ flexBasis: "500px" }} label="タイトル" placeholder='新世界より' value={title} onChange={({ target: { value } }) => setTitle(value)} />

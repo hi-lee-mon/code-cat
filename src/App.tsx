@@ -13,6 +13,7 @@ import { defaultTheme } from './theme/defaultTheme';
 import { darkTheme } from './theme/darkTheme';
 import { useRecoilValue } from 'recoil';
 import { themeState } from './globalState/themeState';
+import { Signin } from './components/pages/Signin';
 
 //HeaderOnlyにヘッダーネームを渡す方法
 //グローバルstateとパスから動的に変更する
@@ -29,6 +30,7 @@ export const App = () => {
         {/* Routing */}
         <Routes>
           <Route path="/login" element={<HeaderOnly><Login /></HeaderOnly>} />
+          <Route path="/signin" element={<HeaderOnly><Signin /></HeaderOnly>} />
           <Route path="/bookManagement" element={<HeaderOnly><BookManagement /></HeaderOnly>} />
           <Route path="/" element={<HeaderOnly><Home /></HeaderOnly>} />
           <Route path="/*" element={<HeaderOnly><Page404 /></HeaderOnly>} />

@@ -13,6 +13,7 @@ import { useOpenSnackbar } from '../../../hooks/useSetSnackbarState';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import { useSetRecoilState } from 'recoil';
 import { themeState } from '../../../globalState/themeState';
+import { auth } from '../../../firebase/config';
 
 
 
@@ -21,6 +22,8 @@ const Header = () => {
   const loaction = useLocation();
   const { openBar } = useOpenSnackbar();
   const setTheme = useSetRecoilState(themeState);
+  const a = auth.currentUser;
+  console.log(a)
 
   const navigate = useNavigate();
   const handleLogout = async () => {
@@ -65,15 +68,18 @@ const Header = () => {
             sx={{ mr: 2 }}
           ><GitHubIcon />
           </IconButton>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={open}
-            sx={{ mr: 2 }}
-          ><LogoutIcon />
-          </IconButton>
+          {
+            auth.currentUser &&
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={open}
+              sx={{ mr: 2 }}
+            ><LogoutIcon />
+            </IconButton>
+          }
         </Toolbar>
       </AppBar>
       <CustomDialog open={isOpen} closeDialog={close} positive={handleLogout} display={{ title: "ログアウト", text: "ログアウトしますか？" }} />

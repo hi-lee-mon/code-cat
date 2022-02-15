@@ -72,7 +72,7 @@ export const BookUpdateDialog: React.FC<Props> = ({ open, closeDialog, updateBoo
         <DialogContentText id="alert-dialog-slide-description">
           更新するボタンで更新実行
         </DialogContentText>
-        <Box sx={{ minHeight: "350px", minWidth: "400px", mt: "10px" }}>
+        <Box sx={{ minHeight: "350px", minWidth: "300px", mt: "10px" }}>
           <Stack spacing={1}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <TextField sx={{ flexBasis: "500px" }} label="ID" placeholder='000' value={bookId} onChange={({ target: { value } }) => setIBookId(value)} />
