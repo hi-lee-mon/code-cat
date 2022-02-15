@@ -1,4 +1,4 @@
-import { collection, DocumentSnapshot, onSnapshot, orderBy, query } from "firebase/firestore";
+import { collection, DocumentSnapshot, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/config";
 import { FetchedBook } from "../types/book";
@@ -32,7 +32,7 @@ export const useFetchBooks = () => {
   useEffect(() => {
     const colRef = collection(db, "book");
     // id順でクエリ
-    const q = query(colRef, orderBy("bookId"));
+    const q = query(colRef, orderBy("bookId", 'desc'), limit(15));
 
     // 対象のドキュメントに変更か差分があったときのみ動く
     const unSub = onSnapshot(q, (querySnapshot) => {

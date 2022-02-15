@@ -65,7 +65,7 @@ export const BookManagementAdd = () => {
   return (
     <div>
       {
-        true ? (
+        load ? (
           <Box sx={{ m: "3", minHeight: "430px" }}>
             <CustomSkeleton />
           </Box>
