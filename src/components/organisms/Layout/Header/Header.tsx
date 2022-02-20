@@ -5,21 +5,21 @@ import { Box } from '@mui/system';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logout } from '../../../../firebase/auth';
 import { CustomDialog } from '../../../molecules/CustomDialog';
-import { useDisplay } from '../../../../hooks/useDisplay';
+import { useDialog } from '../../../../hooks/useDialog';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { getCurrentLocationName } from './getCurrentLocationName';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import { useSetRecoilState } from 'recoil';
 import { themeState } from '../../../../globalState/themeState';
-import { useSetNavbar } from '../../../../hooks/useNavbar/useSetNavbar';
+import { useSetNavbarState } from '../../../../hooks/useNavbar/useSetNavbarState';
 import { useCurrentUser } from '../../../../hooks/useCurrentUser';
 
 const Header: React.FC = () => {
-  const [isOpen, { close, open }] = useDisplay()
+  const [isOpen, { close, open }] = useDialog()
   const currentUser = useCurrentUser();
   const loaction = useLocation();
   const setTheme = useSetRecoilState(themeState);
-  const openNavbar = useSetNavbar()["openNavbar"];
+  const openNavbar = useSetNavbarState()["openNavbar"];
 
   const navigate = useNavigate();
   const handleLogout = async () => {

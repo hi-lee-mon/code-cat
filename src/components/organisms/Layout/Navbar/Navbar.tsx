@@ -1,15 +1,35 @@
 import { Divider, Drawer, List, ListItem } from '@mui/material';
 import { Box } from '@mui/system';
-import { useSetNavbar } from '../../../../hooks/useNavbar/useSetNavbar';
+import { useSetNavbarState } from '../../../../hooks/useNavbar/useSetNavbarState';
 import { useNavbar } from '../../../../hooks/useNavbar/useNavbar';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { links } from './links';
+import { CustomDialog } from '../../../molecules/CustomDialog';
+import { useDialog } from '../../../../hooks/useDialog';
+import { logout } from '../../../../firebase/auth';
+import { useOpenSnackbar } from '../../../../hooks/useSetSnackbarState';
+import { SEVERITY } from '../../../../constants/constants';
 
 export const Navbar = () => {
-  const closeNavbar = useSetNavbar()["closeNavbar"];
-  const isOpen = useNavbar();
+  const closeNavbar = useSetNavbarState()["closeNavbar"];
+  const isNavbarOpen = useNavbar();
+  const [isDialogOpen, logoutDialog] = useDialog()
+  const navigate = useNavigate();
+  const { openSnackbar } = useOpenSnackbar();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      logoutDialog.close();
+      navigate("/login")
+    } catch (e) {
+      const error = e as Error
+      openSnackbar(error.message, SEVERITY.ERROR);
+    }
+
+  }
   return (
-    <Drawer open={isOpen} onClose={closeNavbar}>
+    <Drawer open={isNavbarOpen} onClose={closeNavbar}>
       <Box sx={{ width: 250 }} role="presentation">
         <List>
           {links.map((link) => (
@@ -17,9 +37,16 @@ export const Navbar = () => {
               {link.title}
             </ListItem>
           ))}
+          <ListItem button onClick={() => window.open("https://github.com/hi-lee-mon/code-cat", '_blank')}>
+            GitHubへ
+          </ListItem>
+          <ListItem button onClick={logoutDialog.open}>
+            ログアウト
+          </ListItem>
         </List>
         <Divider />
       </Box>
+      <CustomDialog open={isDialogOpen} closeDialog={logoutDialog.close} positive={handleLogout} display={{ title: "ログアウト", text: "ログアウトしますか？" }} />
     </Drawer>
   )
 }

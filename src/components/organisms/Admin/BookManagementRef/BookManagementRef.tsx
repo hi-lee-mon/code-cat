@@ -9,7 +9,7 @@ import { createRows } from './modules/createRows';
 import { useSetRecoilState } from 'recoil';
 import { messageState } from '../../../../globalState/message';
 import { CustomDialog } from '../../../molecules/CustomDialog';
-import { useDisplay } from '../../../../hooks/useDisplay';
+import { useDialog } from '../../../../hooks/useDialog';
 import { isString } from '../../../../types/assertion/isString';
 import { getSeltectedRows } from '../../../../modules/getSeltectedRows';
 import { BookUpdateDialog } from '../../../molecules/BookUpdateDialog';
@@ -22,9 +22,9 @@ import { CustomLoadingOverlay } from './CustomLoadingOverlay';
 
 export const BookManagementRef = () => {
   const [selectedRowIds, setSelectedRowIds] = useState<GridSelectionModel>([]);
-  const [isDeleteOpen, deleteDialog] = useDisplay()
-  const [isUpdateOpen, updateDialog] = useDisplay()
-  const { openBar } = useOpenSnackbar();
+  const [isDeleteOpen, deleteDialog] = useDialog()
+  const [isUpdateOpen, updateDialog] = useDialog()
+  const { openSnackbar } = useOpenSnackbar();
   const setMessage = useSetRecoilState(messageState);
   const [load, table] = useLoad();
 
@@ -37,7 +37,7 @@ export const BookManagementRef = () => {
   // 削除ダイアログオープン
   const handleOpenDeleteDialog = () => {
     const selectedRows = getSeltectedRows(rows, selectedRowIds);
-    if (selectedRows.length === 0) return openBar("最低1件選択してください。", SEVERITY.INFO);
+    if (selectedRows.length === 0) return openSnackbar("最低1件選択してください。", SEVERITY.INFO);
     deleteDialog.open()
   }
 
@@ -51,7 +51,7 @@ export const BookManagementRef = () => {
     selectedRowIds.forEach(async (id) => {
       isString(id)
       // TODO:完成したら削除してよいif文
-      if (id === "VYQszrhCDzIB0PrpkKEc") return openBar("ID:000は消せないようにしています。", SEVERITY.INFO);
+      if (id === "VYQszrhCDzIB0PrpkKEc") return openSnackbar("ID:000は消せないようにしています。", SEVERITY.INFO);
       try {
         await deleteBookService(id);
       } catch (e) {
@@ -66,8 +66,8 @@ export const BookManagementRef = () => {
   const handleOpenUpdateDialog = () => {
     const selectedRows = getSeltectedRows(rows, selectedRowIds);
     // TODO:完成したら削除してよいif文
-    if (selectedRows.length === 0) return openBar("最低1件選択してください。", SEVERITY.INFO);
-    if (selectedRows.length > 1) return openBar("更新は1度に1件までです。", SEVERITY.INFO);
+    if (selectedRows.length === 0) return openSnackbar("最低1件選択してください。", SEVERITY.INFO);
+    if (selectedRows.length > 1) return openSnackbar("更新は1度に1件までです。", SEVERITY.INFO);
     updateDialog.open()
   }
 
@@ -76,15 +76,15 @@ export const BookManagementRef = () => {
    * TODO:ある程度本の登録ができたらレコード1つ１つに削除ボタンをつける。
    */
   const updateBook = async (param: updateBookParam) => {
-    if (param.id === "VYQszrhCDzIB0PrpkKEc") return openBar("ID:000は更新できないようにしてます", SEVERITY.INFO);
+    if (param.id === "VYQszrhCDzIB0PrpkKEc") return openSnackbar("ID:000は更新できないようにしてます", SEVERITY.INFO);
     try {
       table.loading()
       await updateBookService(param)
       updateDialog.close()
-      openBar("更新完了", SEVERITY.SUCCESS);
+      openSnackbar("更新完了", SEVERITY.SUCCESS);
     } catch (e) {
       const error = e as Error
-      openBar(error.message, SEVERITY.ERROR);
+      openSnackbar(error.message, SEVERITY.ERROR);
     }
     table.loadCompleted()
   }

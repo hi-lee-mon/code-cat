@@ -19,7 +19,7 @@ export const BookManagementAdd = () => {
   const [lastName, setLastName] = useInput();
   const [genre, setGenre] = useInput();
   const [load, setLoad] = useState(false);
-  const { openBar } = useOpenSnackbar();
+  const { openSnackbar } = useOpenSnackbar();
   const setMessage = useSetRecoilState(messageState);
 
   /**
@@ -48,16 +48,16 @@ export const BookManagementAdd = () => {
     }
     // TODO:高度なバリデーション処理を実装する
     const result = isEmptyBookAddInput(book);
-    if (result) return openBar("空文字は禁止", SEVERITY.INFO);
+    if (result) return openSnackbar("空文字は禁止", SEVERITY.INFO);
     setLoad(true);
     try {
       await addBookService(book);
-      openBar(`登録完了`, SEVERITY.SUCCESS);
+      openSnackbar(`登録完了`, SEVERITY.SUCCESS);
       setLoad(false);
       clear()
     } catch (e) {
       const error = e as Error;
-      openBar(error.message, SEVERITY.ERROR);
+      openSnackbar(error.message, SEVERITY.ERROR);
     }
   }
 

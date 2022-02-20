@@ -13,7 +13,7 @@ export const Login: React.FC = () => {
   const [email, setEmail] = useInput();
   const [password, setPassword] = useInput();
   const { load, login } = useLogin();
-  const { openBar } = useOpenSnackbar();
+  const { openSnackbar } = useOpenSnackbar();
 
   // router
   const navigate = useNavigate();
@@ -24,11 +24,11 @@ export const Login: React.FC = () => {
   const handleLogin = async () => {
     try {
       await login(email, password);
-      openBar(G_MSG_001, SEVERITY.SUCCESS);
+      openSnackbar(G_MSG_001, SEVERITY.SUCCESS);
       navigate("/bookManagement")
     } catch (e) {
       const error = e as Error
-      openBar(error.message, SEVERITY.ERROR);
+      openSnackbar(error.message, SEVERITY.ERROR);
     }
   }
 

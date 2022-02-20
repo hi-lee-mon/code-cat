@@ -1,4 +1,4 @@
-import { collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { updateBookParam } from "../types/book";
 import { db } from "./config";
 

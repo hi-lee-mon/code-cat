@@ -59,5 +59,9 @@ export const basicLogin = async (email: string, password: string) => {
  * ログアウト
  */
 export const logout = async () => {
-  await signOut(auth);
+  try {
+    await signOut(auth);
+  } catch (e) {
+    throw e
+  }
 };

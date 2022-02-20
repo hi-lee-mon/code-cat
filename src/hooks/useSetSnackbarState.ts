@@ -9,7 +9,11 @@ type Anchor = {
   horizontal: "center"
 }
 type HandleOpen = (message: string, severity: Severity, anchor?: Anchor) => void
-
+// TODO:openとclose処理の統合(呼び出しは、useSnackbar["openSnackbar"]で行う。)
+/**
+ *
+ * @returns openBar snackbarを開く処理
+ */
 export const useOpenSnackbar = () => {
   // Recoil atom
   const setOpen = useSetRecoilState(snackbarOpenState);
@@ -28,9 +32,13 @@ export const useOpenSnackbar = () => {
     setSeverity(severity)
   }, [setOpen, setMessage, setAnchor, setSeverity, defaultAnchor])
 
-  return { openBar: handleOpen }
+  return { openSnackbar: handleOpen }
 }
 
+/**
+ *
+ * @returns closeBar snackbarを閉じる処理
+ */
 export const useCloseSnackbar = () => {
   const setOpen = useSetRecoilState(snackbarOpenState);
 
@@ -41,5 +49,5 @@ export const useCloseSnackbar = () => {
     setOpen(false);
   }, [setOpen])
 
-  return { closeBar: handleClose, }
+  return { closeSnackbar: handleClose }
 }
