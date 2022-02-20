@@ -9,10 +9,11 @@ export const createColumns = () => {
   const columnsData = {
     bookId: 'ID',
     title: 'タイトル',
-    lastName: '姓',
-    firstName: '名',
+    authorName: '著者',
     genre: 'ジャンル',
-    updateDate: '更新日',
+    borrow: '貸出',
+    returnDate: '返却日',
+    updateAt: '更新日',
   };
   // テンプレートテーブルカラム作成
   const tempColumns: GridColDef[] = Object.entries(columnsData).map(

@@ -3,28 +3,31 @@ import { Box } from '@mui/system'
 import { GridSelectionModel } from '@mui/x-data-grid'
 import { useInput } from '../../hooks/useInput'
 import { getSeltectedRows } from '../../modules/getSeltectedRows'
-import { FetchedBook, updateBookParam } from '../../types/book'
+import { BookRow, Book, UpdateBook } from '../../types/book'
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useDialog } from '../../hooks/useDialog'
 import { CustomDialog } from './CustomDialog'
+import { serverTimestamp } from 'firebase/firestore'
 
 
 type Props = {
   open: boolean,
   closeDialog: () => void,
-  updateBook: (param: updateBookParam) => void,
-  rows: FetchedBook[],
+  updateBook: (param: UpdateBook) => void,
+  rows: BookRow[],
   ids: GridSelectionModel
 }
 
 export const BookUpdateDialog: React.FC<Props> = ({ open, closeDialog, updateBook, rows, ids }) => {
-  // state
   const selectedRow = getSeltectedRows(rows, ids)[0]
+  // state
   const [bookId, setIBookId] = useInput(selectedRow.bookId);
   const [title, setTitle] = useInput(selectedRow.title);
-  const [firstName, setFirstName] = useInput(selectedRow.firstName);
-  const [lastName, setLastName] = useInput(selectedRow.lastName);
+  const [authorName, setAuthorName] = useInput(selectedRow.authorName);
   const [genre, setGenre] = useInput(selectedRow.genre);
+  // TODO:selectに修正
+  const [borrow, setBorrow] = useInput(selectedRow.borrow ? "貸出不可" : "貸出可");
+  const [returnDate, setReturnDate] = useInput(selectedRow.returnDate ? selectedRow.returnDate : "貸出記録なし");
   const [isOpen, childModal] = useDialog();
 
   /**
@@ -33,9 +36,10 @@ export const BookUpdateDialog: React.FC<Props> = ({ open, closeDialog, updateBoo
   const clear = () => {
     setIBookId("")
     setTitle("")
-    setFirstName("")
-    setLastName("")
+    setAuthorName("")
     setGenre("")
+    setBorrow("")
+    setReturnDate("")
   }
 
   const handleClose = () => {
@@ -46,15 +50,18 @@ export const BookUpdateDialog: React.FC<Props> = ({ open, closeDialog, updateBoo
   const handleUpdateBook = () => {
     childModal.close();
     closeDialog();
-    const param: updateBookParam = {
-      id: selectedRow.id,
-      book: {
-        bookId,
-        title,
-        firstName,
-        lastName,
-        genre,
-      }
+    const book: Book = {
+      bookId,
+      title,
+      authorName,
+      genre,
+      borrow: true,
+      returnDate,
+      updateAt: serverTimestamp(),
+    }
+    const param: UpdateBook = {
+      docId: selectedRow.id,
+      book,
     }
     updateBook(param);
   }
@@ -80,19 +87,23 @@ export const BookUpdateDialog: React.FC<Props> = ({ open, closeDialog, updateBoo
             </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <TextField sx={{ flexBasis: "500px" }} label="タイトル" placeholder='新世界より' value={title} onChange={({ target: { value } }) => setTitle(value)} />
-              <IconButton color="error" onClick={() => setTitle("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
+              <IconButton color="error" onClick={() => setTitle("")} tabIndex={-1} ><CancelIcon color="error" /></IconButton >
             </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <TextField sx={{ flexBasis: "500px" }} label="著者名(姓)" placeholder='貴志' value={lastName} onChange={({ target: { value } }) => setLastName(value)} />
-              <IconButton color="error" onClick={() => setLastName("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
+              <TextField sx={{ flexBasis: "500px" }} label="著者" placeholder='貴志祐介' value={authorName} onChange={({ target: { value } }) => setAuthorName(value)} />
+              <IconButton color="error" onClick={() => setAuthorName("")} tabIndex={-1} ><CancelIcon color="error" /></IconButton >
             </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <TextField sx={{ flexBasis: "500px" }} label="著者名(名)" placeholder='祐介' value={firstName} onChange={({ target: { value } }) => setFirstName(value)} />
-              <IconButton color="error" onClick={() => setFirstName("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
+              <TextField sx={{ flexBasis: "500px" }} label="ジャンル" placeholder='SF' value={genre} onChange={({ target: { value } }) => setAuthorName(value)} />
+              <IconButton color="error" onClick={() => setGenre("")} tabIndex={-1} ><CancelIcon color="error" /></IconButton >
             </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <TextField sx={{ flexBasis: "500px" }} label="ジャンル" placeholder='SF' value={genre} onChange={({ target: { value } }) => setGenre(value)} />
-              <IconButton color="error" onClick={() => setGenre("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
+              <TextField sx={{ flexBasis: "500px" }} label="貸出" placeholder='可/不可' value={borrow} onChange={({ target: { value } }) => setBorrow(value)} />
+              <IconButton color="error" onClick={() => setBorrow("")} tabIndex={-1} ><CancelIcon color="error" /></IconButton >
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <TextField sx={{ flexBasis: "500px" }} label="返却日" placeholder='2022/01/01' value={returnDate} onChange={({ target: { value } }) => setReturnDate(value)} />
+              <IconButton color="error" onClick={() => setReturnDate("")} tabIndex={-1} ><CancelIcon color="error" /></IconButton >
             </Box>
           </Stack>
         </Box >

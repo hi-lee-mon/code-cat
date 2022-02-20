@@ -21,6 +21,7 @@ export const Navbar = () => {
     try {
       await logout();
       logoutDialog.close();
+      closeNavbar();
       navigate("/login")
     } catch (e) {
       const error = e as Error

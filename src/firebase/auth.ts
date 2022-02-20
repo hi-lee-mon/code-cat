@@ -28,16 +28,9 @@ export const basicSignin = async (email: string, password: string) => {
  */
 export const anonymouslyLogin = async () => {
   try {
-    const cred = await signInAnonymously(auth);
-    return {
-      isSuccess: true,
-      user: cred.user,
-    }
-  } catch (error) {
-    return {
-      isSuccess: false,
-      user: null,
-    }
+    await signInAnonymously(auth);
+  } catch (e) {
+    throw e
   }
 }
 

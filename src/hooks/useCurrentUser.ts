@@ -7,6 +7,7 @@ export const useCurrentUser = () => {
 
   onAuthStateChanged(auth, (user) => {
     setCurrentUser(user)
+    console.log(user?.uid)
   });
   return currentUser
 }

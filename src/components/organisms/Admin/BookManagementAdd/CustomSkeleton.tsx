@@ -1,7 +1,7 @@
 import { Box, Skeleton, Stack } from '@mui/material'
 import React from 'react'
 
-const skeletons = [...Array(5)].map(() => <Skeleton variant="rectangular" sx={{ width: "500px", height: "56px", borderRadius: "5px", }} />)
+const skeletons = [...Array(4)].map(() => <Skeleton variant="rectangular" sx={{ width: "500px", height: "56px", borderRadius: "5px", }} />)
 
 // TODO:スマホ用スケルトン作成
 export const CustomSkeleton = () => {

@@ -15,7 +15,7 @@ import { getSeltectedRows } from '../../../../modules/getSeltectedRows';
 import { BookUpdateDialog } from '../../../molecules/BookUpdateDialog';
 import { useOpenSnackbar } from '../../../../hooks/useSetSnackbarState';
 import { SEVERITY } from '../../../../constants/constants';
-import { updateBookParam } from '../../../../types/book';
+import { BookRow, UpdateBook } from '../../../../types/book';
 import { updateBookService } from '../../../../firebase/update';
 import { useLoad } from '../../../../hooks/useLoad';
 import { CustomLoadingOverlay } from './CustomLoadingOverlay';
@@ -75,8 +75,7 @@ export const BookManagementRef = () => {
    * 更新処理
    * TODO:ある程度本の登録ができたらレコード1つ１つに削除ボタンをつける。
    */
-  const updateBook = async (param: updateBookParam) => {
-    if (param.id === "VYQszrhCDzIB0PrpkKEc") return openSnackbar("ID:000は更新できないようにしてます", SEVERITY.INFO);
+  const updateBook = async (param: UpdateBook) => {
     try {
       table.loading()
       await updateBookService(param)

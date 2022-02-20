@@ -1,7 +1,7 @@
-import { Box, IconButton, CircularProgress, Stack, TextField, Button } from '@mui/material';
+import { Box, IconButton, Stack, TextField, Button } from '@mui/material';
 import { useState } from 'react';
 import { addBookService } from '../../../../firebase/post';
-import { Book } from '../../../../types/book';
+import { InputBookData } from '../../../../types/book';
 import CancelIcon from '@mui/icons-material/Cancel';
 import Message from '../../../atoms/Message';
 import { useInput } from '../../../../hooks/useInput';
@@ -15,8 +15,7 @@ import { CustomSkeleton } from './CustomSkeleton';
 export const BookManagementAdd = () => {
   const [bookId, setIBookId] = useInput();
   const [title, setTitle] = useInput();
-  const [firstName, setFirstName] = useInput();
-  const [lastName, setLastName] = useInput();
+  const [authorName, setAuthorName] = useInput();
   const [genre, setGenre] = useInput();
   const [load, setLoad] = useState(false);
   const { openSnackbar } = useOpenSnackbar();
@@ -28,8 +27,7 @@ export const BookManagementAdd = () => {
   const clear = () => {
     setIBookId("")
     setTitle("")
-    setFirstName("")
-    setLastName("")
+    setAuthorName("")
     setGenre("")
   }
 
@@ -39,22 +37,21 @@ export const BookManagementAdd = () => {
    */
   const handleAddBook = async () => {
     setMessage("")
-    const book: Book = {
+    const inputBookData: InputBookData = {
       bookId,
       title,
-      firstName,
-      lastName,
+      authorName,
       genre,
     }
     // TODO:高度なバリデーション処理を実装する
-    const result = isEmptyBookAddInput(book);
+    const result = isEmptyBookAddInput(inputBookData);
     if (result) return openSnackbar("空文字は禁止", SEVERITY.INFO);
     setLoad(true);
     try {
-      await addBookService(book);
+      await addBookService(inputBookData);
       openSnackbar(`登録完了`, SEVERITY.SUCCESS);
       setLoad(false);
-      clear()
+      clear();
     } catch (e) {
       const error = e as Error;
       openSnackbar(error.message, SEVERITY.ERROR);
@@ -82,12 +79,8 @@ export const BookManagementAdd = () => {
                 <IconButton color="error" onClick={() => setTitle("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
               </Box>
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <TextField sx={{ flexBasis: "500px" }} label="著者名(姓)" placeholder='貴志' value={lastName} onChange={({ target: { value } }) => setLastName(value)} />
-                <IconButton color="error" onClick={() => setLastName("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <TextField sx={{ flexBasis: "500px" }} label="著者名(名)" placeholder='祐介' value={firstName} onChange={({ target: { value } }) => setFirstName(value)} />
-                <IconButton color="error" onClick={() => setFirstName("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
+                <TextField sx={{ flexBasis: "500px" }} label="著者" placeholder='貴志祐介' value={authorName} onChange={({ target: { value } }) => setAuthorName(value)} />
+                <IconButton color="error" onClick={() => setAuthorName("")} tabIndex={-1}><CancelIcon color="error" /></IconButton >
               </Box>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <TextField sx={{ flexBasis: "500px" }} label="ジャンル" placeholder='SF' value={genre} onChange={({ target: { value } }) => setGenre(value)} />

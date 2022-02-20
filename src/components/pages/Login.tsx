@@ -1,12 +1,13 @@
-import { Avatar, Box, Grid, Paper, Stack, TextField, Typography } from '@mui/material'
+import { Avatar, Box, Grid, Link, Paper, Stack, TextField, Typography } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton';
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { teal } from "@mui/material/colors";
 import { useInput } from '../../hooks/useInput';
 import { useLogin } from '../../hooks/useLogin';
 import { useOpenSnackbar } from '../../hooks/useSetSnackbarState';
-import { G_MSG_001, SEVERITY } from '../../constants/constants';
-import { Link, useNavigate } from 'react-router-dom';
+import { G_MSG_001, G_MSG_002, SEVERITY } from '../../constants/constants';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { anonymouslyLogin } from '../../firebase/auth';
 
 export const Login: React.FC = () => {
   // state
@@ -66,12 +67,8 @@ export const Login: React.FC = () => {
             <LoadingButton type="submit" color="primary" variant="contained" loading={load} fullWidth onClick={handleLogin}>
               ログイン
             </LoadingButton>
-            <Typography variant="caption">
-              <Link to="/">パスワードを忘れましたか？</Link>
-            </Typography>
-            <Typography variant="caption" display="block">
-              アカウントを持っていますか？
-              <Link to="/signin">アカウントを作成</Link>
+            <Typography variant="caption" display="block" >
+              <RouterLink to="/signin">アカウントを作成</RouterLink>
             </Typography>
           </Stack>
         </Box>
