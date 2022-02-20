@@ -3,27 +3,23 @@ import LunchDiningIcon from '@mui/icons-material/LunchDining';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Box } from '@mui/system';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { logout } from '../../../firebase/auth';
-import { CustomDialog } from '../../molecules/CustomDialog';
-import { useDialog } from '../../../hooks/useDialog';
+import { logout } from '../../../../firebase/auth';
+import { CustomDialog } from '../../../molecules/CustomDialog';
+import { useDisplay } from '../../../../hooks/useDisplay';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { getCurrentLocationName } from './getCurrentLocationName';
-import { SEVERITY } from '../../../constants/constants';
-import { useOpenSnackbar } from '../../../hooks/useSetSnackbarState';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import { useSetRecoilState } from 'recoil';
-import { themeState } from '../../../globalState/themeState';
-import { auth } from '../../../firebase/config';
+import { themeState } from '../../../../globalState/themeState';
+import { useSetNavbar } from '../../../../hooks/useNavbar/useSetNavbar';
+import { useCurrentUser } from '../../../../hooks/useCurrentUser';
 
-
-
-const Header = () => {
-  const [isOpen, { close, open }] = useDialog()
+const Header: React.FC = () => {
+  const [isOpen, { close, open }] = useDisplay()
+  const currentUser = useCurrentUser();
   const loaction = useLocation();
-  const { openBar } = useOpenSnackbar();
   const setTheme = useSetRecoilState(themeState);
-  const a = auth.currentUser;
-  console.log(a)
+  const openNavbar = useSetNavbar()["openNavbar"];
 
   const navigate = useNavigate();
   const handleLogout = async () => {
@@ -31,25 +27,31 @@ const Header = () => {
     close();
     navigate("/login")
   }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={() => openBar("ELDEN RING 2月25日 発売", SEVERITY.SUCCESS)}
-          ><LunchDiningIcon />
-          </IconButton>
+          {
+            currentUser &&
+            // ハンバーガーアイコン
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={openNavbar}
+            ><LunchDiningIcon />
+            </IconButton>
+          }
           {/* TODO:ヘッダーをグローバルなstateにする */}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {
               getCurrentLocationName(loaction.pathname)
             }
           </Typography>
+          {/* テーマ変更アイコン */}
           <IconButton
             size="large"
             edge="start"
@@ -59,6 +61,7 @@ const Header = () => {
             sx={{ mr: 2 }}
           ><Brightness4Icon />
           </IconButton>
+          {/* GitHubアイコン */}
           <IconButton
             size="large"
             edge="start"
@@ -69,7 +72,8 @@ const Header = () => {
           ><GitHubIcon />
           </IconButton>
           {
-            auth.currentUser &&
+            currentUser &&
+            // ログアウトアイコン
             <IconButton
               size="large"
               edge="start"

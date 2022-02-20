@@ -5,7 +5,7 @@ import { useInput } from '../../hooks/useInput'
 import { getSeltectedRows } from '../../modules/getSeltectedRows'
 import { FetchedBook, updateBookParam } from '../../types/book'
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useDialog } from '../../hooks/useDialog'
+import { useDisplay } from '../../hooks/useDisplay'
 import { CustomDialog } from './CustomDialog'
 
 
@@ -25,7 +25,7 @@ export const BookUpdateDialog: React.FC<Props> = ({ open, closeDialog, updateBoo
   const [firstName, setFirstName] = useInput(selectedRow.firstName);
   const [lastName, setLastName] = useInput(selectedRow.lastName);
   const [genre, setGenre] = useInput(selectedRow.genre);
-  const [isOpen, childModal] = useDialog();
+  const [isOpen, childModal] = useDisplay();
 
   /**
  * 入力をすべてクリア

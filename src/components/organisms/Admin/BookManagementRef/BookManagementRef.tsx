@@ -9,7 +9,7 @@ import { createRows } from './modules/createRows';
 import { useSetRecoilState } from 'recoil';
 import { messageState } from '../../../../globalState/message';
 import { CustomDialog } from '../../../molecules/CustomDialog';
-import { useDialog } from '../../../../hooks/useDialog';
+import { useDisplay } from '../../../../hooks/useDisplay';
 import { isString } from '../../../../types/assertion/isString';
 import { getSeltectedRows } from '../../../../modules/getSeltectedRows';
 import { BookUpdateDialog } from '../../../molecules/BookUpdateDialog';
@@ -22,8 +22,8 @@ import { CustomLoadingOverlay } from './CustomLoadingOverlay';
 
 export const BookManagementRef = () => {
   const [selectedRowIds, setSelectedRowIds] = useState<GridSelectionModel>([]);
-  const [isDeleteOpen, deleteDialog] = useDialog()
-  const [isUpdateOpen, updateDialog] = useDialog()
+  const [isDeleteOpen, deleteDialog] = useDisplay()
+  const [isUpdateOpen, updateDialog] = useDisplay()
   const { openBar } = useOpenSnackbar();
   const setMessage = useSetRecoilState(messageState);
   const [load, table] = useLoad();
