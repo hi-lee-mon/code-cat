@@ -5,6 +5,10 @@ export const links = [
   },
   {
     to: "/bookManagement",
-    title: "管理"
+    title: "図書管理(CRUD)"
+  },
+  {
+    to: "/login",
+    title: "ログイン"
   },
 ]

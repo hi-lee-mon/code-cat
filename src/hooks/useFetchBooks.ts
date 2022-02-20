@@ -4,7 +4,7 @@ import { SEVERITY } from "../constants/constants";
 import { db } from "../firebase/config";
 import { FetchedBook } from "../types/book";
 import { useOpenSnackbar } from "./useSetSnackbarState";
-
+// TODO:fetchの部分とカスタムフックを分割
 // book型チェック
 const asBook = (doc: DocumentSnapshot) => {
   const book = doc.data();

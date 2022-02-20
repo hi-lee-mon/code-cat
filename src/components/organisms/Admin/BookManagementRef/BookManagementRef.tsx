@@ -15,10 +15,13 @@ import { getSeltectedRows } from '../../../../modules/getSeltectedRows';
 import { BookUpdateDialog } from '../../../molecules/BookUpdateDialog';
 import { useOpenSnackbar } from '../../../../hooks/useSetSnackbarState';
 import { SEVERITY } from '../../../../constants/constants';
-import { BookRow, UpdateBook } from '../../../../types/book';
+import { UpdateBook } from '../../../../types/book';
 import { updateBookService } from '../../../../firebase/update';
 import { useLoad } from '../../../../hooks/useLoad';
 import { CustomLoadingOverlay } from './CustomLoadingOverlay';
+import { auth } from '../../../../firebase/config';
+import { assertIsUser } from '../../../../types/assertion/assertIsUser';
+import { addActionLog } from '../../../../firebase/post';
 
 export const BookManagementRef = () => {
   const [selectedRowIds, setSelectedRowIds] = useState<GridSelectionModel>([]);
@@ -45,9 +48,19 @@ export const BookManagementRef = () => {
    * 削除処理
    * TODO:ある程度本の登録ができたらレコード1つ１つに削除ボタンをつける。
    */
-  const deleteBook = () => {
+  const deleteBook = async () => {
     deleteDialog.close()
     setMessage("")
+    const currentUser = auth.currentUser;
+    assertIsUser(currentUser);
+    // ユーザのアクションを記録
+    // TODO:ユーザアクションの記録とcrud操作を必ず同時に行うように修正
+    try {
+      await addActionLog("delete", currentUser.uid, getSeltectedRows(rows, selectedRowIds));
+    } catch (e) {
+      const error = e as Error;
+      openSnackbar(error.message, SEVERITY.ERROR);
+    }
     selectedRowIds.forEach(async (id) => {
       isString(id)
       // TODO:完成したら削除してよいif文
@@ -58,14 +71,13 @@ export const BookManagementRef = () => {
         const error = e as Error
         setMessage(error.message)
       }
-      setMessage("削除完了")
+      setMessage("削除処理終了")
     });
   }
 
   // 更新ダイアログオープン
   const handleOpenUpdateDialog = () => {
     const selectedRows = getSeltectedRows(rows, selectedRowIds);
-    // TODO:完成したら削除してよいif文
     if (selectedRows.length === 0) return openSnackbar("最低1件選択してください。", SEVERITY.INFO);
     if (selectedRows.length > 1) return openSnackbar("更新は1度に1件までです。", SEVERITY.INFO);
     updateDialog.open()
@@ -73,9 +85,21 @@ export const BookManagementRef = () => {
 
   /**
    * 更新処理
-   * TODO:ある程度本の登録ができたらレコード1つ１つに削除ボタンをつける。
    */
+  //  TODO:ある程度本の登録ができたらレコード1つ１つに削除ボタンをつける。
   const updateBook = async (param: UpdateBook) => {
+    setMessage("")
+    const currentUser = auth.currentUser;
+    assertIsUser(currentUser);
+    // ユーザのアクションを記録
+    // TODO:ユーザアクションの記録とcrud操作を必ず同時に行うように修正
+    try {
+      await addActionLog("update", currentUser.uid, param);
+    } catch (e) {
+      const error = e as Error;
+      openSnackbar(error.message, SEVERITY.ERROR);
+    }
+    // 更新処理
     try {
       table.loading()
       await updateBookService(param)

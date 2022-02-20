@@ -1,6 +1,6 @@
 import { Box, IconButton, Stack, TextField, Button } from '@mui/material';
 import { useState } from 'react';
-import { addBookService } from '../../../../firebase/post';
+import { addActionLog, addBookService } from '../../../../firebase/post';
 import { InputBookData } from '../../../../types/book';
 import CancelIcon from '@mui/icons-material/Cancel';
 import Message from '../../../atoms/Message';
@@ -11,6 +11,8 @@ import { useSetRecoilState } from 'recoil';
 import { messageState } from '../../../../globalState/message';
 import { isEmptyBookAddInput } from './isEmptyInput';
 import { CustomSkeleton } from './CustomSkeleton';
+import { auth } from '../../../../firebase/config';
+import { assertIsUser } from '../../../../types/assertion/assertIsUser';
 
 export const BookManagementAdd = () => {
   const [bookId, setIBookId] = useInput();
@@ -47,6 +49,17 @@ export const BookManagementAdd = () => {
     const result = isEmptyBookAddInput(inputBookData);
     if (result) return openSnackbar("空文字は禁止", SEVERITY.INFO);
     setLoad(true);
+    // TODO:ユーザアクションとcrudを同期
+    const currentUser = auth.currentUser;
+    assertIsUser(currentUser);
+    // ユーザのアクションを記録
+    try {
+      await addActionLog("create", currentUser.uid, inputBookData);
+    } catch (e) {
+      const error = e as Error;
+      openSnackbar(error.message, SEVERITY.ERROR);
+    }
+    // 登録処理実行
     try {
       await addBookService(inputBookData);
       openSnackbar(`登録完了`, SEVERITY.SUCCESS);
@@ -63,11 +76,11 @@ export const BookManagementAdd = () => {
     <div>
       {
         load ? (
-          <Box sx={{ m: "3", minHeight: "430px" }}>
+          <Box sx={{ m: "3", minHeight: "400px" }}>
             <CustomSkeleton />
           </Box>
         ) : (
-          <Box sx={{ minHeight: "430px", display: "flex", flexDirection: "column" }}>
+          <Box sx={{ minHeight: "400px", display: "flex", flexDirection: "column" }}>
             <Message />
             <Stack spacing={1}>
               <Box sx={{ display: "flex", alignItems: "center" }}>

@@ -38,17 +38,17 @@ export const Navbar = () => {
               {link.title}
             </ListItem>
           ))}
+          <Divider sx={{ my: 2 }} />
           <ListItem button onClick={() => window.open("https://github.com/hi-lee-mon/code-cat", '_blank')}>
-            GitHubへ
+            GitHub
           </ListItem>
           <ListItem button onClick={logoutDialog.open}>
             ログアウト
           </ListItem>
         </List>
-        <Divider />
       </Box>
       <CustomDialog open={isDialogOpen} closeDialog={logoutDialog.close} positive={handleLogout} display={{ title: "ログアウト", text: "ログアウトしますか？" }} />
-    </Drawer>
+    </Drawer >
   )
 }
 

@@ -26,8 +26,8 @@ export const BookUpdateDialog: React.FC<Props> = ({ open, closeDialog, updateBoo
   const [authorName, setAuthorName] = useInput(selectedRow.authorName);
   const [genre, setGenre] = useInput(selectedRow.genre);
   // TODO:selectに修正
-  const [borrow, setBorrow] = useInput(selectedRow.borrow ? "貸出不可" : "貸出可");
-  const [returnDate, setReturnDate] = useInput(selectedRow.returnDate ? selectedRow.returnDate : "貸出記録なし");
+  const [borrow, setBorrow] = useInput(selectedRow.borrow);
+  const [returnDate, setReturnDate] = useInput(selectedRow.returnDate ? selectedRow.returnDate : "");
   const [isOpen, childModal] = useDialog();
 
   /**
@@ -55,8 +55,10 @@ export const BookUpdateDialog: React.FC<Props> = ({ open, closeDialog, updateBoo
       title,
       authorName,
       genre,
-      borrow: true,
-      returnDate,
+      // borrowが可なら貸出可能なためborrowをtrueに更新
+      borrow: borrow === "可" ? true : false,
+      // returnDateは空文字の場合nullに更新
+      returnDate: returnDate === "" ? null : returnDate,
       updateAt: serverTimestamp(),
     }
     const param: UpdateBook = {
@@ -94,7 +96,7 @@ export const BookUpdateDialog: React.FC<Props> = ({ open, closeDialog, updateBoo
               <IconButton color="error" onClick={() => setAuthorName("")} tabIndex={-1} ><CancelIcon color="error" /></IconButton >
             </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <TextField sx={{ flexBasis: "500px" }} label="ジャンル" placeholder='SF' value={genre} onChange={({ target: { value } }) => setAuthorName(value)} />
+              <TextField sx={{ flexBasis: "500px" }} label="ジャンル" placeholder='SF' value={genre} onChange={({ target: { value } }) => setGenre(value)} />
               <IconButton color="error" onClick={() => setGenre("")} tabIndex={-1} ><CancelIcon color="error" /></IconButton >
             </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
